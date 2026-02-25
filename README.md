@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Skylark BI Agent: Monday.com Intelligence Suite
 
-## Getting Started
+Skylark is a modern, AI-powered Business Intelligence agent designed to interface directly with Monday.com boards. Built on Next.js 16 and powered by Llama-3.3-70B via Groq, it utilizes the Model Context Protocol (MCP) to execute read-only queries against your Deal and Work Order pipelines.
 
-First, run the development server:
+## 🚀 Key Features
+- **Conversational BI:** Ask natural language questions about your Monday.com data.
+- **MCP Integration:** Native tool-calling via the official `@mondaydotcomorg/monday-api-mcp`.
+- **Data Resilience:** Built-in safeguards for missing CSV data and strict token-limit management via backend data pruning.
+- **Glassmorphic UI:** A state-of-the-art, scroll-linked animated interface powered by `framer-motion`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠 Tech Stack
+- **Framework:** Next.js 16.1 (App Router, Turbopack)
+- **AI SDK:** Vercel AI SDK v3.4+
+- **LLM:** Llama-3.3-70B-Versatile (via Groq)
+- **Protocol:** Model Context Protocol (MCP) SDK
+- **Styling & Animation:** Tailwind CSS, Framer Motion
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 Local Setup Instructions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository:**
+   \`\`\`bash
+   git clone <your-repo-url>
+   cd skylark-bi-agent
+   \`\`\`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Install Dependencies:**
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-## Learn More
+3. **Configure Environment Variables:**
+   Create a `.env.local` file in the root directory and add your keys:
+   \`\`\`env
+   MONDAY_API_TOKEN=your_monday_personal_access_token
+   GROQ_API_KEY=your_free_groq_api_key
+   \`\`\`
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the Development Server:**
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+   Navigate to \`http://localhost:3000\` to interact with the agent.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🏗 Architecture Overview
+1. **Frontend:** Client-side React components manage the chat state and UI streaming using \`useChat\`.
+2. **API Route (\`/api/chat\`):** Acts as the orchestrator. It passes the conversation to the Groq LLM.
+3. **Tool Execution:** When Llama-3 decides to fetch data, the API route spawns a local \`npx\` process to run the Monday MCP server, executes the GraphQL query, prunes the massive JSON response down to essential tokens, and returns it to the LLM for reasoning.
