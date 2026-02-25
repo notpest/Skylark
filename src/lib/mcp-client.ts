@@ -26,7 +26,7 @@ export async function executeMondayMCPTool(toolName: string, args: Record<string
     command: "npx",
     args: [
       "-y",
-      "@mondaydotcomorg/monday-api-mcp@latest",
+      "@mondaydotcomorg/monday-api-mcp",
       "-t",
       token
     ],
