@@ -29,7 +29,11 @@ export async function executeMondayMCPTool(toolName: string, args: Record<string
       "@mondaydotcomorg/monday-api-mcp@latest",
       "-t",
       token
-    ]
+    ],
+    env: {
+        ...process.env,
+        npm_config_cache: '/tmp/.npm'
+    } as Record<string , string>
   });
 
   // FIX: Clients do not declare 'tools' in capabilities.

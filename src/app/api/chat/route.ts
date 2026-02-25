@@ -63,9 +63,9 @@ export async function POST(req: Request) {
             board_id: z.union([z.number(), z.string()]).optional(), // Allow string for flexibility            
             query: z.string().optional(),
             searchType: z.enum(['BOARD', 'DOCUMENTS', 'FOLDERS']).optional(),
-            limit: z.number().optional(),
+            limit: z.coerce.number().optional().default(10),            
             cursor: z.string().optional(),
-          }).optional().default({}).describe('Arguments for the tool. Pass {} if no arguments needed.'),
+          }).optional().default({ limit: 10 }).describe('Arguments for the tool. Pass {} if no arguments needed.'),
         }),
         execute: async ({ tool_name, arguments: args }) => {
           try {
